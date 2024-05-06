@@ -1,0 +1,58 @@
+---
+- name: deploy bootstrap-website
+  hosts: webservers
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Etape 1 - Updating apt
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Etape 2 (1) - Installation of Apache server
+      apt:
+        name: apache2
+        state: latest
+
+    - name: Etape (2) - Installation of Zip
+      apt:
+        name: zip
+        state: latest
+
+    - name: Etape 3 (1) - change the folder to html
+      shell: cd /var/www/html
+
+    - name: Etape 3 (2) - download web files from Github
+      get_url:
+        url: https://github.com/startbootstrap/startbootstrap-personal/archive/gh-pages.zip
+        dest: /var/www/html/website.zip
+
+    - name: Etape 3 (3) - Extract the zip file with unzip
+      ansible.builtin.unarchive:
+        src: /var/www/html/website.zip
+        dest: /var/www/html
+        remote_src: yes
+
+    - name: Etape 3 (4) - copy the web files to html
+      copy: 
+        src: /var/www/html/startbootstrap-personal-gh-pages/
+        dest: /var/www/html
+        remote_src: yes
+
+    - name: Etape 3 (5) - delete the extracted web folder
+      file: 
+        path: /var/www/html/startbootstrap-personal-gh-pages
+        state: absent
+
+    - name: Etape 3 (6) - Delete the file website.zip
+      file: 
+        path: /var/www/html/website.zip
+        state: absent
+
+    - name: Etape 4 - power up the apache server
+      ansible.builtin.service:
+        enabled: yes
+        name: apache2
+        state: started
