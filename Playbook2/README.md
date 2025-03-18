@@ -19,4 +19,4 @@ Note: If there are any errors during the course of running vagrant up, and it dr
 Notes
 To shut down the virtual machine, enter vagrant halt in the Terminal in the same folder that has the Vagrantfile. To destroy it completely (if you want to save a little disk space, or want to rebuild it from scratch with vagrant up again), type in vagrant destroy.
 About the Author
-This project was created by Jeff Geerling as an example for Ansible for DevOps.s
+This project was created by Jeff Geerling as an example for Ansible for DevOps.
