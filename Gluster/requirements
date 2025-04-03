@@ -1,0 +1,4 @@
+---
+roles:
+  - name: masterb3.firewall
+  - name: masterb3.glusterfs
